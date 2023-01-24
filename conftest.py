@@ -2,15 +2,13 @@ import pytest
 from selenium import webdriver
 
 
-def test_webdriver(url):
-    driver = webdriver.Chrome()
-    driver.get(url)
-    return driver
-
-
 def pytest_addoption(parser):
-    url = parser.addoption("--url", action="store", default="https://www.saucedemo.com/")
-    return url
+    parser.addoption("--url", action="store", default="https://www.saucedemo.com/")
+
+
+def setup_webdriver():
+    driver = webdriver.Chrome()
+    return driver
 
 
 def test_variables():
