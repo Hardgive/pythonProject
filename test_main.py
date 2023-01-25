@@ -23,12 +23,10 @@ class TestSaucedemo:
         browser.find_element(By.ID, "user-name").send_keys(conftest.test_variables().get("login_standard"))
         username_text = browser.find_element(By.ID, "user-name")
         with allure.step("Проверяем, что заполнили поле логина правильно"):
-            assert username_text.get_attribute("value") == conftest.test_variables().get(
-                "login_standard")
+            assert username_text.get_attribute("value") == conftest.test_variables().get("login_standard")
         browser.find_element(By.ID, "password").send_keys(conftest.test_variables().get("password"))
         password_text = browser.find_element(By.ID, "password")
-        assert password_text.get_attribute("value") == conftest.test_variables().get(
-            "password")  # Проверяем, что заполнили поле пароля правильно
+        assert password_text.get_attribute("value") == conftest.test_variables().get("password")  # Проверяем, что заполнили поле пароля правильно
         login_button.click()
         product_title = browser.find_element(By.CLASS_NAME, "title").get_property("innerText")
         assert product_title == "PRODUCTS"  # Проверяем авторизацию
