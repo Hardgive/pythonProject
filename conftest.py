@@ -1,14 +1,28 @@
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+
+def url(request):
+    return request.config.getoption("--url")
+
+
+@pytest.fixture(params=["chrome"], scope="class")
+def driver_init(request):
+    if request.param == "chrome":
+        driver = webdriver.Chrome()
+    request.cls.driver = driver
+    yield
+    driver.close()
+
+
+@pytest.fixture()
+def url(request):
+    return request.config.getoption("--url")
 
 
 def pytest_addoption(parser):
     parser.addoption("--url", action="store", default="https://www.saucedemo.com/")
-
-
-def setup_webdriver():
-    driver = webdriver.Chrome()
-    return driver
 
 
 def test_variables():
@@ -20,8 +34,3 @@ def test_variables():
         'password': 'secret_sauce'
     }
     return dictionary
-
-
-@pytest.fixture()
-def url(request):
-    return request.config.getoption("--url")
