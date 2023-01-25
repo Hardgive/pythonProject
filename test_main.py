@@ -1,14 +1,12 @@
-import time
-from time import sleep
 import pytest
 from selenium.webdriver.common.by import By
 import conftest
-from selenium import webdriver
-import selenium.webdriver.common
 import allure
-import selenium.common.exceptions as exceptions
 import selenium.webdriver.support.expected_conditions as EC
-from allure_commons.types import AttachmentType
+
+import selenium.webdriver.common
+import selenium.common.exceptions as exceptions
+from time import sleep
 
 
 @pytest.mark.usefixtures("driver_init", "url")
@@ -24,8 +22,9 @@ class TestSaucedemo:
         assert login_button_value == "Login"  # Проверяем, что кнопка Login существует
         browser.find_element(By.ID, "user-name").send_keys(conftest.test_variables().get("login_standard"))
         username_text = browser.find_element(By.ID, "user-name")
-        assert username_text.get_attribute("value") == conftest.test_variables().get(
-            "login_standard")  # Проверяем, что заполнили поле логина правильно
+        with allure.step("Проверяем, что заполнили поле логина правильно"):
+            assert username_text.get_attribute("value") == conftest.test_variables().get(
+                "login_standard")
         browser.find_element(By.ID, "password").send_keys(conftest.test_variables().get("password"))
         password_text = browser.find_element(By.ID, "password")
         assert password_text.get_attribute("value") == conftest.test_variables().get(
@@ -60,3 +59,5 @@ class TestSaucedemo:
 
 # pytest --url=https://www.saucedemo.com/ - запуск всех тестов
 # pytest -m "not cart" --url=https://www.saucedemo.com/ - запуск всех тестов, кроме маркера cart
+
+# Чтобы посмотреть отчет allure нужно запустить Powershell, перейти в дирректорию проекта и запустить команду allure serve report и тогда откроется html страница с отчетом

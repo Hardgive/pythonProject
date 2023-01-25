@@ -14,6 +14,7 @@ def driver_init(request):
     request.cls.driver = driver
     yield
     driver.close()
+    driver.quit()
 
 
 @pytest.fixture()
