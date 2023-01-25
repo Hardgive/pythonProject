@@ -14,7 +14,7 @@ from allure_commons.types import AttachmentType
 @pytest.mark.usefixtures("driver_init", "url")
 class TestSaucedemo:
     @allure.feature('Login')  # Группа функций теста
-    @allure.story('Логинимся на маркетплейс')  # Детально о выполняемой функции теста
+    @allure.story('Логинимся на маркетплейс')  # Детально о выполняемом методе теста
     @allure.severity('blocker')  # critical, normal, minor, trivial - Важность функции теста
     def test_login(self, url):
         browser = self.driver
@@ -34,6 +34,7 @@ class TestSaucedemo:
         product_title = browser.find_element(By.CLASS_NAME, "title").get_property("innerText")
         assert product_title == "PRODUCTS"  # Проверяем авторизацию
 
+    @pytest.mark.cart
     @allure.feature("Cart")
     @allure.story("Добавляем рюкзак в корзину кликнув кнопку ADD TO CART")
     @allure.severity("critical")
@@ -44,6 +45,7 @@ class TestSaucedemo:
         add_to_cart_button.click()
         assert browser.find_element(By.CLASS_NAME, "shopping_cart_badge").get_property("innerText") == "1"  # Проверяем, что бейдж теперь над корзиной == 1
 
+    @pytest.mark.cart
     @allure.feature("Cart")
     @allure.story("Убираем рюкзак из корзины кликнув кнопку REMOVE")
     @allure.severity("critical")
@@ -56,3 +58,5 @@ class TestSaucedemo:
         badge = browser.find_elements(By.CLASS_NAME, "shopping_cart_badge")
         assert len(badge) == 0  # Проверяем, что бейджа теперь нет
 
+# pytest --url=https://www.saucedemo.com/ - запуск всех тестов
+# pytest -m "not cart" --url=https://www.saucedemo.com/ - запуск всех тестов, кроме маркера cart
