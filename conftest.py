@@ -10,7 +10,10 @@ def url(request):
 @pytest.fixture(params=["chrome"], scope="class")
 def driver_init(request):
     if request.param == "chrome":
-        driver = webdriver.Chrome()
+        options = Options()
+        options.add_argument('--headless')
+        options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(chrome_options=options)
     request.cls.driver = driver
     yield
     driver.close()
