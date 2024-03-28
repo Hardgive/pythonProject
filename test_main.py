@@ -26,10 +26,11 @@ class TestSaucedemo:
             assert username_text.get_attribute("value") == conftest.test_variables().get("login_standard")
         browser.find_element(By.ID, "password").send_keys(conftest.test_variables().get("password"))
         password_text = browser.find_element(By.ID, "password")
-        assert password_text.get_attribute("value") == conftest.test_variables().get("password")  # Проверяем, что заполнили поле пароля правильно
+        with allure.step("Проверяем, что заполнили поле пароля правильно"):
+            assert password_text.get_attribute("value") == conftest.test_variables().get("password")  # Проверяем, что заполнили поле пароля правильно
         login_button.click()
         product_title = browser.find_element(By.CLASS_NAME, "title").get_property("innerText")
-        assert product_title == "PRODUCTS"  # Проверяем авторизацию
+        assert product_title == "Products"  # Проверяем авторизацию
 
     @pytest.mark.cart
     @allure.feature("Cart")
@@ -38,7 +39,7 @@ class TestSaucedemo:
     def test_add_to_cart(self):
         browser = self.driver
         add_to_cart_button = browser.find_element(By.ID, "add-to-cart-sauce-labs-backpack")
-        assert add_to_cart_button.get_property("innerText") == "ADD TO CART"  # Проверяем надпись на кнопке ADD TO CART
+        assert add_to_cart_button.get_property("innerText") == "Add to cart"  # Проверяем надпись на кнопке ADD TO CART
         add_to_cart_button.click()
         assert browser.find_element(By.CLASS_NAME, "shopping_cart_badge").get_property("innerText") == "1"  # Проверяем, что бейдж теперь над корзиной == 1
 
@@ -49,11 +50,13 @@ class TestSaucedemo:
     def test_remove_from_cart(self):
         browser = self.driver
         remove_backpack = browser.find_element(By.ID, "remove-sauce-labs-backpack")
-        assert remove_backpack.get_property("innerText") == "REMOVE"  # Проверяем надпись на кнопке ADD TO CART
+        assert remove_backpack.get_property("innerText") == "Remove"  # Проверяем надпись на кнопке ADD TO CART
         assert EC.element_to_be_clickable(remove_backpack)  # Проверяем его кликабельность
         remove_backpack.click()
         badge = browser.find_elements(By.CLASS_NAME, "shopping_cart_badge")
         assert len(badge) == 0  # Проверяем, что бейджа теперь нет
+
+
 
 # pytest --url=https://www.saucedemo.com/ - запуск всех тестов
 # pytest -m "not cart" --url=https://www.saucedemo.com/ - запуск всех тестов, кроме маркера cart
